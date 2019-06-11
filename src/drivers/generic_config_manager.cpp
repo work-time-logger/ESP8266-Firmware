@@ -80,6 +80,7 @@ void startWifiManager(bool force) {
         wifiManager.setDebugOutput(false);
     #endif
 
+    wifiManager.setRemoveDuplicateAPs(false);
     wifiManager.setMinimumSignalQuality(50);
     wifiManager.setTimeout(120);
     wifiManager.setSaveConfigCallback(saveConfigCallback);
@@ -109,6 +110,7 @@ void startWifiManager(bool force) {
     strcpy(api_token, custom_api_token.getValue());
     strcpy(ota_password, custom_ota_password.getValue());
     save_configuration_to_spiffs();
+
 }
 
 void save_configuration_to_spiffs() {
