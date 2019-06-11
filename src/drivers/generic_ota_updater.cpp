@@ -59,8 +59,8 @@ void generic_ota_updater_init(const config_manager_interface * config) {
         }
     });
     ArduinoOTA.begin();
-    DEBUG_APP("Ready");
-    DEBUG_APP("IP address: %s", WiFi.localIP().toString().c_str());
+    DEBUG_APP("\nReady\n");
+    DEBUG_APP("IP address: %s\n\n", WiFi.localIP().toString().c_str());
 }
 
 void generic_ota_updater_event() {

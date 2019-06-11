@@ -6,16 +6,38 @@
 #include <interfaces/hal/hal_interface.h>
 #include <interfaces/app_logic/main_logic_interface.h>
 
-#ifndef HARDWARE_VERSION
-    #error "No valid HARDWARE_VERSION provided"
-#elif HARDWARE_VERSION == compact
+#if !defined(HARDWARE_CORE_VERSION) && !defined(HARDWARE_COMPACT_VERSION) && !defined(HARDWARE_FULL_VERSION)
+    #error "No valid hardware version provided"
+#endif
+
+#ifdef HARDWARE_CORE_VERSION
+    #ifdef HW_LOADED
+        #error "Multiple hardawre versions provided!"
+    #endif
+    #define HW_LOADED
+
+    #include <hardware/core_hal.h>
+    #include <app_logic/void_logic.h>
+#endif
+
+#ifdef HARDWARE_COMPACT_VERSION
+    #ifdef HW_LOADED
+        #error "Multiple hardawre versions provided!"
+    #endif
+    #define HW_LOADED
+
     #include <hardware/compact_hal.h>
     #include <app_logic/compact_logic.h>
-#elif HARDWARE_VERSION == full
+#endif
+
+#ifdef HARDWARE_FULL_VERSION
+    #ifdef HW_LOADED
+        #error "Multiple hardawre versions provided!"
+    #endif
+    #define HW_LOADED
+
     #include <hardware/full_hal.h>
     #include <app_logic/full_logic.h>
-#else
-    #error "Unknown HARDWARE_VERSION provided"
 #endif
 
 #include <globals/hal.h>
@@ -28,16 +50,19 @@ void setup(void)
 {
     Serial.begin(9600);
 
-    #ifndef HARDWARE_VERSION
-        #error "No valid HARDWARE_VERSION provided"
-    #elif HARDWARE_VERSION == compact
+    #ifdef HARDWARE_CORE_VERSION
+        hal = *core_hal_get();
+        logic = *void_logic_get();
+    #endif
+
+    #ifdef HARDWARE_COMPACT_VERSION
         hal = *compact_hal_get();
         logic = *compact_logic_get();
-    #elif HARDWARE_VERSION == full
+    #endif
+
+    #ifdef HARDWARE_FULL_VERSION
         hal = *full_hal_get();
         logic = *full_logic_get();
-    #else
-        #error "Unknown HARDWARE_VERSION provided"
     #endif
 
     hal_init(&hal);

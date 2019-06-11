@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(WorkTimeLoggerFirmwareForESP)
+project(ESP8266-Firmware)
 
 include(CMakeListsPrivate.txt)
 
